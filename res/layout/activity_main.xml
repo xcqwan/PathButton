@@ -1,29 +1,61 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" 
     android:id="@+id/rlparent"
-    android:background="#ABCDEF">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ABCDEF" >
 
-    
-    
-   
-        <TextView
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="@string/hello_world"
         tools:context=".MainActivity" />
-    
-    <!-- 長寬求其設，你設大啲亦可以，但如果過細佢會自動調返夠喐嘅位置。  -->
-    <!-- align要自己設，靠邊一邊 -->
-    <geniuz.myPathbutton.composerLayout
+
+    <com.zombie.wonhot.WonhotLayout
         android:id="@+id/test"
-        android:layout_width="20dp"
-        android:layout_height="wrap_content" 
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true" 
-    ></geniuz.myPathbutton.composerLayout>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.zombie.wonhot.WonhotLayout
+        android:id="@+id/test1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.zombie.wonhot.WonhotLayout
+        android:id="@+id/test2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.zombie.wonhot.WonhotLayout
+        android:id="@+id/test3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.zombie.wonhot.WonhotLayout
+        android:id="@+id/test4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.zombie.wonhot.WonhotLayout
+        android:id="@+id/test5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.zombie.wonhot.WonhotLayout
+        android:id="@+id/test6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.zombie.wonhot.WonhotLayout
+        android:id="@+id/test7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.zombie.wonhot.WonhotLayout
+        android:id="@+id/test8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>

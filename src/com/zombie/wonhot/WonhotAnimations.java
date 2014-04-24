@@ -1,4 +1,4 @@
-package geniuz.myPathbutton;
+package com.zombie.wonhot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,43 +11,38 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnticipateInterpolator;
-import android.view.animation.OvershootInterpolator;
 import android.view.animation.RotateAnimation;
-import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout.LayoutParams;
-import android.widget.RelativeLayout;
 import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
 
-public class myAnimations {
-
-	public final int R; // 半徑
-	public static byte RIGHTBOTTOM = 1, CENTERBOTTOM = 2, LEFTBOTTOM = 3,
-			LEFTCENTER = 4, LEFTTOP = 5, CENTERTOP = 6, RIGHTTOP = 7,
-			RIGHTCENTER = 8;
-
-	private int pc; // 位置代號
-	private ViewGroup clayout; // 父laoyout
-	private final int amount; // 有幾多個按鈕
-	private double fullangle = 180.0;// 在幾大嘅角度內排佈
-	private byte xOri = 1, yOri = 1; // x、y值嘅方向，即系向上還是向下
-	private boolean isOpen = false;// 记录是已经打开还是关闭
+public class WonhotAnimations {
+	//半径
+	public final int R; 
+	// 位置编号
+	private int pc; 
+	//父组件
+	private ViewGroup clayout;
+	//按钮个数
+	private final int amount;
+	//子按钮排列弧度
+	private double fullangle = 180.0;
+	//排列方向
+	private byte xOri = 1, yOri = 1; 
+	//是否展开
+	private boolean isOpen = false;
 	private List<ViewPropertyAnimator> viewAnimators = new ArrayList<ViewPropertyAnimator>();
 
 	/**
-	 * 構造函數
 	 * 
 	 * @param comlayout
-	 *            包裹彈出按鈕嘅layout
+	 *            组件
 	 * @param poscode
-	 *            位置代號，分別對應RIGHTBOTTOM、CENTERBOTTOM、LEFTBOTTOM、LEFTCENTER、
+	 *             位置编号RIGHTBOTTOM、CENTERBOTTOM、LEFTBOTTOM、LEFTCENTER、
 	 *            LEFTTOP、CENTERTOP、RIGHTTOP、RIGHTCENTER
 	 * @param radius
-	 *            半徑
+	 *            半径
 	 */
-	public myAnimations(ViewGroup comlayout, int poscode, int radius) {
+	public WonhotAnimations(ViewGroup comlayout, int poscode, int radius) {
 		this.pc = poscode;
 		this.clayout = comlayout;
 		this.amount = clayout.getChildCount();
@@ -59,39 +54,55 @@ public class myAnimations {
 			ViewPropertyAnimator anim = animate(childAt);
 			viewAnimators.add(anim);
 		}
-
-		if (poscode == RIGHTBOTTOM) { // 右下角
+		
+		switch (poscode) {
+		case LayoutConstants.RIGHTBOTTOM:
 			fullangle = 90;
 			xOri = -1;
 			yOri = -1;
-		} else if (poscode == CENTERBOTTOM) {// 中下
+			break;
+		case LayoutConstants.CENTERBOTTOM:
 			fullangle = 180;
 			xOri = -1;
 			yOri = -1;
-		} else if (poscode == LEFTBOTTOM) { // 左下角
+			break;
+		case LayoutConstants.LEFTBOTTOM:
 			fullangle = 90;
 			xOri = 1;
 			yOri = -1;
-		} else if (poscode == LEFTCENTER) { // 左中
+			break;
+		case LayoutConstants.LEFTCENTER:
 			fullangle = 180;
 			xOri = 1;
 			yOri = -1;
-		} else if (poscode == LEFTTOP) { // 左上角
+			break;
+		case LayoutConstants.LEFTTOP:
 			fullangle = 90;
 			xOri = 1;
 			yOri = 1;
-		} else if (poscode == CENTERTOP) { // 中上
+			break;
+		case LayoutConstants.CENTERTOP:
 			fullangle = 180;
 			xOri = -1;
 			yOri = 1;
-		} else if (poscode == RIGHTTOP) { // 右上角
+			break;
+		case LayoutConstants.RIGHTTOP:
 			fullangle = 90;
 			xOri = -1;
 			yOri = 1;
-		} else if (poscode == RIGHTCENTER) { // 右中
+			break;
+		case LayoutConstants.RIGHTCENTER:
 			fullangle = 180;
 			xOri = -1;
 			yOri = -1;
+			break;
+		case LayoutConstants.CENTER:
+			fullangle = 360;
+			xOri = 1;
+			yOri = 1;
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -117,95 +128,85 @@ public class myAnimations {
 
 		@Override
 		public void onAnimationCancel(Animator animation) {
-			// TODO Auto-generated method stub
-
+			
 		}
 
 		@Override
 		public void onAnimationRepeat(Animator animation) {
-			// TODO Auto-generated method stub
 
 		}
 	}
 
 	/**
-	 * 彈幾個按鈕出嚟
+	 * 弹出动画
 	 * 
 	 * @param durationMillis
-	 *            用幾多時間
+	 *            动画时长
 	 */
-	public void startAnimationsIn(int durationMillis) {
+	public void startAnimationsIn(int durationMillis, int step) {
 		isOpen = true;
 		for (int i = 0; i < clayout.getChildCount(); i++) {
-			final LinearLayout inoutimagebutton = (LinearLayout) clayout
-					.getChildAt(i);
+			final LinearLayout inoutimagebutton = (LinearLayout) clayout.getChildAt(i);
 
 			double offangle = fullangle / (amount - 1);
+			if (pc == LayoutConstants.CENTER) {
+				offangle = fullangle / amount;
+			}
 
 			final double deltaY, deltaX;
-			if (pc == LEFTCENTER || pc == RIGHTCENTER) {
+			if (pc == LayoutConstants.LEFTCENTER || pc == LayoutConstants.RIGHTCENTER) {
 				deltaX = Math.sin(offangle * i * Math.PI / 180) * R;
 				deltaY = Math.cos(offangle * i * Math.PI / 180) * R;
 			} else {
 				deltaY = Math.sin(offangle * i * Math.PI / 180) * R;
 				deltaX = Math.cos(offangle * i * Math.PI / 180) * R;
 			}
+			Log.i("test", "i : " + i + ",x : " + deltaX + ",y : " + deltaY);
 
 			ViewPropertyAnimator viewPropertyAnimator = viewAnimators.get(i);
 			viewPropertyAnimator.setListener(null);
+			viewPropertyAnimator.setDuration(durationMillis + step * i);
 
 			inoutimagebutton.setVisibility(View.VISIBLE);
-			viewPropertyAnimator.x(
-					(float) (inoutimagebutton.getLeft() + xOri * deltaX)).y(
-					(float) (inoutimagebutton.getTop() + yOri * deltaY));
+			viewPropertyAnimator.x((float) (inoutimagebutton.getLeft() + xOri * deltaX)).y((float) (inoutimagebutton.getTop() + yOri * deltaY));
 
 		}
 	}
 
 	/**
-	 * 收埋幾個按鈕入去
+	 * 收缩动画
 	 * 
 	 * @param durationMillis
-	 *            用幾多時間
+	 *            动画时长
 	 */
-	public void startAnimationsOut(int durationMillis) {
+	public void startAnimationsOut(int durationMillis, int step) {
 		isOpen = false;
 		for (int i = 0; i < clayout.getChildCount(); i++) {
-			final LinearLayout inoutimagebutton = (LinearLayout) clayout
-					.getChildAt(i);
+			final LinearLayout inoutimagebutton = (LinearLayout) clayout.getChildAt(i);
 			ViewPropertyAnimator viewPropertyAnimator = viewAnimators.get(i);
-			viewPropertyAnimator.setListener(null);
-			viewPropertyAnimator.x((float) inoutimagebutton.getLeft()).y(
-					(float) inoutimagebutton.getTop());
-			viewPropertyAnimator
-					.setListener(new AnimListener(inoutimagebutton));
-
+			viewPropertyAnimator.x((float) inoutimagebutton.getLeft()).y((float) inoutimagebutton.getTop());
+			viewPropertyAnimator.setListener(new AnimListener(inoutimagebutton));
+			viewPropertyAnimator.setDuration(durationMillis + step * (clayout.getChildCount() - i - 1));
 		}
 
 	}
 
-	/**
-	 * 獲取位置代碼（其實貌似都冇乜用）
-	 */
 	public int getPosCode() {
 		return this.pc;
 	}
 
 	/**
-	 * 自轉函數（原本就有嘅靜態函數，未實體化都可以調用）
+	 * 自转动画
 	 * 
 	 * @param fromDegrees
-	 *            從幾多度
+	 *            开始角度
 	 * @param toDegrees
-	 *            到幾多度
+	 *            结束角度
 	 * @param durationMillis
-	 *            轉幾耐
+	 *            动画时长
 	 */
-	public static Animation getRotateAnimation(float fromDegrees,
-			float toDegrees, int durationMillis) {
-		RotateAnimation rotate = new RotateAnimation(fromDegrees, toDegrees,
-				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
-				0.5f);
+	public static Animation getRotateAnimation(float fromDegrees, float toDegrees, int durationMillis) {
+		RotateAnimation rotate = new RotateAnimation(fromDegrees, toDegrees, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
 		rotate.setDuration(durationMillis);
 		rotate.setFillAfter(true);
 		return rotate;
