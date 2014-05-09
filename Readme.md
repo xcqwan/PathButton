@@ -15,3 +15,8 @@ change：
 其中使用了[NineOldAndroids](https://github.com/JakeWharton/NineOldAndroids/) 框架，thanks
 
 ![Alt img](https://github.com/dodola/PathButton/raw/master/img.jpg)
+
+=============
+传奇修改
+1.增加相关注释
+2.增加中间位置适应
